@@ -14,16 +14,21 @@
 ```
 http://localhost:16686/
 ```
+![image info](./assets/jaeger.png)
 
 ## Zipkin
 ```
 http://localhost:9411/zipkin/
 ```
+![image info](./assets/zipkin.png)
 
 ## Prometheus
 ```
 http://localhost:9092/targets
 ```
+![image info](./assets/prometheus-targets.png)
+![image info](./assets/prometheus-metrics.png)
+![image info](./assets/prometheus-exporters.png)
 
 ## Resources
 * Manual Instrumentation - https://opentelemetry.io/docs/instrumentation/java/manual/
