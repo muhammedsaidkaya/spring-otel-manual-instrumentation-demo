@@ -1,6 +1,10 @@
 
 # Telemetry Data - Manual Instrumentation in Spring Boot with OpenTelemetry
 
+```
+sh build.sh
+```
+
 ## Demo-Service
 * curl --location --request GET 'http://localhost:8080/api/'
 * Prometheus Exporter: http://localhost:9090/metrics
