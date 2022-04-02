@@ -6,6 +6,7 @@ import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.metrics.MeterProvider;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
@@ -59,6 +60,12 @@ public class PrintController {
     @PostMapping
     public String print(@RequestBody String message, HttpServletRequest httpServletRequest){
 
+        httpServletRequest.getHeaderNames().asIterator().forEachRemaining(x -> {
+            System.out.println(x);
+            System.out.println(httpServletRequest.getHeader(x));
+            System.out.println("-----------");
+        });
+        ;
         incomingMessageCount++;
 
         Context extractedContext = openTelemetry.getPropagators().getTextMapPropagator()
