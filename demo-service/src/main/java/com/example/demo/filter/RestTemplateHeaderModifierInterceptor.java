@@ -1,4 +1,4 @@
-package com.example.demo.configuration;
+package com.example.demo.filter;
 
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class RestTemplateHeaderModifierInterceptor implements ClientHttpRequestInterceptor {
 
-    private OpenTelemetry openTelemetry = GlobalOpenTelemetry.get();
+    private final OpenTelemetry openTelemetry = GlobalOpenTelemetry.get();
 
     TextMapSetter<HttpRequest> setter =
             (carrier, key, value) -> {

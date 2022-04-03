@@ -25,58 +25,20 @@ import javax.servlet.http.HttpServletRequest;
 public class PrintController {
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
-
-    private long incomingMessageCount;
-
-    private final MeterProvider meterProvider;
-    private final OpenTelemetry openTelemetry;
-    private Tracer tracer;
+    private final Tracer tracer;
 
     @Autowired
-    public PrintController(MeterProvider meterProvider, OpenTelemetry openTelemetry, Tracer tracer){
-        this.meterProvider = meterProvider;
-        this.openTelemetry = openTelemetry;
+    public PrintController(Tracer tracer){
         this.tracer = tracer;
-        Meter meter = this.meterProvider.get("PrometheusExample");
-        meter.gaugeBuilder("incoming.messages")
-            .setDescription("No of incoming messages awaiting processing")
-            .setUnit("message")
-            .buildWithCallback(result -> result.record(incomingMessageCount, Attributes.empty()));
     }
 
-    TextMapGetter<HttpServletRequest> getter = new TextMapGetter<>() {
-                @Override
-                public Iterable<String> keys(HttpServletRequest httpServletRequest) {
-                    return Utils.iterable(httpServletRequest.getHeaderNames());
-                }
-
-                @Override
-                public String get(HttpServletRequest httpServletRequest, String s) {
-                    assert httpServletRequest != null;
-                    return httpServletRequest.getHeader(s);
-                }
-            };
-
     @PostMapping
-    public String print(@RequestBody String message, HttpServletRequest httpServletRequest){
-
-        httpServletRequest.getHeaderNames().asIterator().forEachRemaining(x -> {
-            System.out.println(x);
-            System.out.println(httpServletRequest.getHeader(x));
-            System.out.println("-----------");
-        });
-        ;
-        incomingMessageCount++;
-
-        Context extractedContext = openTelemetry.getPropagators().getTextMapPropagator()
-                .extract(Context.current(), httpServletRequest, getter);
-        try (Scope scope = extractedContext.makeCurrent()) {
-            Span parentSpan = tracer.spanBuilder("print-service-parent").setSpanKind(SpanKind.SERVER).startSpan();
-            try {
-                LOG.info("Getting message: asd");
-            } finally {
-                parentSpan.end();
-            }
+    public String print(@RequestBody String message){
+        Span parentSpan = tracer.spanBuilder("print-service-parent").setSpanKind(SpanKind.SERVER).startSpan();
+        try {
+            LOG.info("Getting message: asd");
+        } finally {
+            parentSpan.end();
         }
         return message;
     }

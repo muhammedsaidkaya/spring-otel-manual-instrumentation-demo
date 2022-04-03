@@ -22,37 +22,24 @@ import java.util.Arrays;
 @RequestMapping("/api/")
 public class DemoController {
 
-    private long incomingMessageCount;
-    private final MeterProvider meterProvider;
     private final Tracer tracer;
     private final RestTemplate restTemplate;
 
     @Autowired
-    public DemoController(MeterProvider meterProvider, Tracer tracer, RestTemplate restTemplate){
-        this.meterProvider = meterProvider;
+    public DemoController(Tracer tracer, RestTemplate restTemplate){
         this.tracer = tracer;
         this.restTemplate = restTemplate;
-        Meter meter = this.meterProvider.get("PrometheusExample");
-        meter.gaugeBuilder("incoming.messages")
-                .setDescription("No of incoming messages awaiting processing")
-                .setUnit("message")
-                .buildWithCallback(result -> result.record(incomingMessageCount, Attributes.empty()));
     }
 
     @GetMapping
     public String demo(){
-
-        incomingMessageCount++;
-
         String response = "said";
-
         Span span = tracer.spanBuilder("Start my wonderful use case").startSpan();
         try {
             parentOne(span);
         } finally {
             span.end();
         }
-
         return response;
     }
 

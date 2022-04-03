@@ -1,6 +1,6 @@
-package com.example.demo.configuration;
+package com.observability.printservice.configuration;
 
-import com.example.demo.filter.RestTemplateHeaderModifierInterceptor;
+import com.observability.printservice.filter.RestTemplateHeaderModifierInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
